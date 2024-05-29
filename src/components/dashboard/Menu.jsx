@@ -4,12 +4,13 @@ import { AppstoreOutlined, PieChartOutlined, DesktopOutlined, ContainerOutlined,
 const { SubMenu } = Menu;
 
 const MenuPage = () => {
+
   return (
-    <Menu style={{ width: 500 }} mode="vertical">
+    <Menu style={{ width: 500 }} mode="vertical" defaultSelectedKeys={['1']}>
       <Menu.Item key="1" icon={<PieChartOutlined />}>
         Dashboard
       </Menu.Item>
-      <Menu.Item key="2" icon={<DesktopOutlined />}>
+      <Menu.Item key="2" icon={<DesktopOutlined />} >
         Production
       </Menu.Item>
       <Menu.Item key="3" icon={<ContainerOutlined />}>

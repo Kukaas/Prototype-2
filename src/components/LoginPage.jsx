@@ -7,6 +7,7 @@ const LoginPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -27,8 +28,10 @@ const LoginPage = () => {
   const handleViewProfile = (id, role) => {
     if (role === 'ADMIN') {
       navigate(`/home/admin/${id}`);
+      console.log(role)
     } else {
       navigate(`/home/employee/${id}`);
+      console.log(role)
     }
   };
 

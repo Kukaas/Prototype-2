@@ -55,7 +55,7 @@ const DataTable = () => {
 
   return (
     <Table 
-        className='w-full'
+        className='w-full overflow-x-hidden'
         columns={columns} 
         dataSource={data} 
         scroll={{ x:  800 }}
