@@ -1,12 +1,14 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Table, message, Button } from "antd";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import UserContext from "../UserContext";
 
 const LoginPage = () => {
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const { setUser } = useContext(UserContext);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -27,6 +29,10 @@ const LoginPage = () => {
   }, []);
 
   const handleViewProfile = (id, role) => {
+    fetch(`https://api-prototype-2-kukaas-projects.vercel.app/api/user/${id}`)
+      .then((response) => response.json())
+      .then((data) => setUser(data));
+
     if (role === "ADMIN") {
       navigate(`/home/admin/${id}`);
       console.log(role);

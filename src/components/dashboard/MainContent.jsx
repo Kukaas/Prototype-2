@@ -4,6 +4,7 @@ import Production from "./maincontent/Production";
 import FinishedProduct from "./maincontent/FinishedProduct";
 import Employees from "./maincontent/Employees";
 import SalesReport from "./maincontent/SalesReport";
+import FinishedProductInventory from "./maincontent/FinishedProductInventory";
 
 const MainContent = () => {
   return (
@@ -14,6 +15,7 @@ const MainContent = () => {
         <Route path="finished-product" element={<FinishedProduct />} />
         <Route path="sales-report" element={<SalesReport />} />
         <Route path="employees" element={<Employees />} />
+        <Route path="finished-product-inventory" element={<FinishedProductInventory />} />
       </Route>
     </Routes>
   );

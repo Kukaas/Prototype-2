@@ -1,26 +1,39 @@
-import { useState, useEffect } from "react";
-import { Table, Button, Typography, Popconfirm, message } from "antd";
+import { useEffect, useState } from "react";
 import axios from "axios";
+import { Button, Popconfirm, Table, Typography, message } from "antd";
 
-const Production = () => {
+const FinishedProductInventory = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    const fetchData = async () => {
-      const result = await axios(
-        "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
-      );
-      setData(result.data);
-    };
-
-    fetchData();
+    axios
+      .get("https://api-prototype-2-kukaas-projects.vercel.app/api/inventory")
+      .then((response) => {
+        setData(response.data);
+      })
+      .catch((error) => {
+        console.error("There was an error!", error);
+      });
   }, []);
+
+  const handleDelete = async (record) => {
+    try {
+      await axios.delete(
+        `https://api-prototype-2-kukaas-projects.vercel.app/api/inventory/${record.id}`
+      );
+      message.success("Record deleted successfully");
+      setData(data.filter((item) => item.id !== record.id));
+    } catch (error) {
+      console.error("Failed to delete record", error);
+      message.error("Failed to delete record");
+    }
+  };
 
   const columns = [
     {
-      title: "Assigned Employee",
-      dataIndex: ["user", "name"],
-      key: "name",
+      title: "Level",
+      dataIndex: "level",
+      key: "level",
     },
     {
       title: "Product Type",
@@ -62,25 +75,12 @@ const Production = () => {
     },
   ];
 
-  const handleDelete = async (record) => {
-    try {
-      await axios.delete(
-        `https://api-prototype-2-kukaas-projects.vercel.app/api/production/${record.id}`
-      );
-      // After deleting, you can fetch the data again or filter out the deleted record from the state
-      const newData = data.filter((item) => item.id !== record.id);
-      message.success("Production deleted successfully");
-      setData(newData);
-    } catch (error) {
-      console.error("Failed to delete record", error);
-      message.error("Failed to delete Production");
-    }
-  };
-
   return (
     <div className="justify-center sm:w-full">
       <div className="text-center mt-2">
-        <Typography.Title level={2}>Productions</Typography.Title>
+        <Typography.Title level={2}>
+          Finished Product Inventory
+        </Typography.Title>
       </div>
       <Table
         className="sm:w-full md:w-full"
@@ -88,9 +88,10 @@ const Production = () => {
         dataSource={data}
         rowKey="id"
         scroll={{ x: "max-content" }}
+        pagination={{ pageSize: 9 }}
       />
     </div>
   );
 };
 
-export default Production;
+export default FinishedProductInventory;
