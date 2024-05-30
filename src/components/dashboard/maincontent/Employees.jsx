@@ -1,19 +1,23 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Table, Button, Typography, Popconfirm, message } from "antd";
+import { Table, Button, Typography, Popconfirm, message, Spin } from "antd";
 import moment from "moment";
 
 const Employees = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://api-prototype-2-kukaas-projects.vercel.app/api/user")
       .then((response) => {
         setData(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("There was an error!", error);
+        setLoading(false);
       });
   }, []);
 
@@ -92,19 +96,21 @@ const Employees = () => {
   ];
 
   return (
-    <div className="justify-center sm:w-full">
-      <div className="text-center mt-2">
-        <Typography.Title level={2}>Users</Typography.Title>
+    <Spin spinning={loading}>
+      <div className="justify-center sm:w-full">
+        <div className="text-center mt-2">
+          <Typography.Title level={2}>Users</Typography.Title>
+        </div>
+        <Table
+          className="sm:w-full md:w-full"
+          columns={columns}
+          dataSource={data}
+          rowKey="id"
+          scroll={{ x: "max-content" }}
+          pagination={{ pageSize: 7 }}
+        />
       </div>
-      <Table
-        className="sm:w-full md:w-full"
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        scroll={{ x: "max-content" }}
-        pagination={{ pageSize: 7 }}
-      />
-    </div>
+    </Spin>
   );
 };
 

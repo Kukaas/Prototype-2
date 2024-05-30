@@ -1,16 +1,19 @@
 import { useState, useEffect } from "react";
-import { Table, Button, Typography, Popconfirm, message } from "antd";
+import { Table, Button, Typography, Popconfirm, message, Spin } from "antd";
 import axios from "axios";
 
 const Production = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     const fetchData = async () => {
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
       );
       setData(result.data);
+      setLoading(false);
     };
 
     fetchData();
@@ -78,18 +81,20 @@ const Production = () => {
   };
 
   return (
-    <div className="justify-center sm:w-full">
-      <div className="text-center mt-2">
-        <Typography.Title level={2}>Productions</Typography.Title>
+    <Spin spinning={loading}>
+      <div className="justify-center sm:w-full">
+        <div className="text-center mt-2">
+          <Typography.Title level={2}>Productions</Typography.Title>
+        </div>
+        <Table
+          className="sm:w-full md:w-full"
+          columns={columns}
+          dataSource={data}
+          rowKey="id"
+          scroll={{ x: "max-content" }}
+        />
       </div>
-      <Table
-        className="sm:w-full md:w-full"
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        scroll={{ x: "max-content" }}
-      />
-    </div>
+    </Spin>
   );
 };
 

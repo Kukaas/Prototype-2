@@ -5,6 +5,7 @@ import {
   DesktopOutlined,
   ContainerOutlined,
   MailOutlined,
+  OrderedListOutlined,
 } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
@@ -56,6 +57,13 @@ const MenuPage = () => {
           </Link>
         </Menu.Item>
       </SubMenu>
+      <Menu.Item
+        key="7"
+        icon={<OrderedListOutlined />}
+        style={{ marginBottom: "10px" }}
+      >
+        <Link to={`/home/admin/${id}/orders`}>Orders</Link>
+      </Menu.Item>
       <Menu.Item
         key="7"
         icon={<DesktopOutlined />}

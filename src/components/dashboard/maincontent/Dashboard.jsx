@@ -1,4 +1,4 @@
-import { Typography, Row, Col, Table } from "antd";
+import { Typography, Row, Col, Table, Spin } from "antd";
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
 import axios from "axios";
@@ -16,23 +16,28 @@ import {
 import moment from "moment";
 
 const Dashboard = () => {
+  const [loading, setLoading] = useState(false);
   //Sales Report Start
   const [data, setData] = useState([]);
 
   const [productTypes, setProductTypes] = useState([]);
 
   useEffect(() => {
+    setLoading(true)
     fetch("https://api-prototype-2-kukaas-projects.vercel.app/api/sales-report")
       .then((response) => response.json())
       .then((data) => {
         const productTypes = data.map((item) => item.productType);
         // Set only the first 2-3 product types
         setProductTypes(productTypes.slice(0, 3));
+        setLoading(false)
       })
       .catch((error) => console.error("Error:", error));
+      setLoading(false)
   }, []);
 
   useEffect(() => {
+    setLoading(true)
     fetch("https://api-prototype-2-kukaas-projects.vercel.app/api/sales-report")
       .then((response) => response.json())
       .then((data) => {
@@ -40,8 +45,10 @@ const Dashboard = () => {
           productTypes.includes(item.productType)
         );
         setData(filteredData);
+        setLoading(false)
       })
       .catch((error) => console.error("Error:", error));
+      setLoading(false)
   }, [productTypes]);
 
   // Group data by productType
@@ -120,11 +127,13 @@ const Dashboard = () => {
   const [production, setProduction] = useState([]);
 
   useEffect(() => {
+    setLoading(true)
     const fetchData = async () => {
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
       );
       setProduction(result.data);
+      setLoading(false)
     };
 
     fetchData();
@@ -215,6 +224,7 @@ const Dashboard = () => {
   //Orders End
 
   return (
+    <Spin spinning={loading}>
     <Row gutter={[16, 16]}>
       <Col xs={24} md={12}>
         <div>
@@ -288,6 +298,7 @@ const Dashboard = () => {
         </div>
       </Col>
     </Row>
+    </Spin>
   );
 };
 

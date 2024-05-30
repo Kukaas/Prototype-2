@@ -1,18 +1,22 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Popconfirm, Table, Typography, message } from "antd";
+import { Button, Popconfirm, Spin, Table, Typography, message } from "antd";
 
 const FinishedProductInventory = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
+    setLoading(true);
     axios
       .get("https://api-prototype-2-kukaas-projects.vercel.app/api/inventory")
       .then((response) => {
         setData(response.data);
+        setLoading(false);
       })
       .catch((error) => {
         console.error("There was an error!", error);
+        setLoading(false);
       });
   }, []);
 
@@ -76,21 +80,23 @@ const FinishedProductInventory = () => {
   ];
 
   return (
-    <div className="justify-center sm:w-full">
-      <div className="text-center mt-2">
-        <Typography.Title level={2}>
-          Finished Product Inventory
-        </Typography.Title>
+    <Spin spinning={loading}>
+      <div className="justify-center sm:w-full">
+        <div className="text-center mt-2">
+          <Typography.Title level={2}>
+            Finished Product Inventory
+          </Typography.Title>
+        </div>
+        <Table
+          className="sm:w-full md:w-full"
+          columns={columns}
+          dataSource={data}
+          rowKey="id"
+          scroll={{ x: "max-content" }}
+          pagination={{ pageSize: 9 }}
+        />
       </div>
-      <Table
-        className="sm:w-full md:w-full"
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        scroll={{ x: "max-content" }}
-        pagination={{ pageSize: 9 }}
-      />
-    </div>
+    </Spin>
   );
 };
 

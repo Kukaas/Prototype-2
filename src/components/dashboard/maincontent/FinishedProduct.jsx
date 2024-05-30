@@ -1,17 +1,20 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import { Button, Popconfirm, Table, Typography, message } from "antd";
+import { Button, Popconfirm, Spin, Table, Typography, message } from "antd";
 
 const FinishedProduct = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/finished-product"
       );
       setData(result.data);
       console.log(result.data);
+      setLoading(false);
     };
 
     fetchData();
@@ -84,17 +87,19 @@ const FinishedProduct = () => {
   ];
 
   return (
-    <div className="justify-center sm:w-full">
-      <div className="text-center mt-2">
-        <Typography.Title level={2}>Finished Products</Typography.Title>
+    <Spin spinning={loading}>
+      <div className="justify-center sm:w-full">
+        <div className="text-center mt-2">
+          <Typography.Title level={2}>Finished Products</Typography.Title>
+        </div>
+        <Table
+          className="sm:w-full md:w-full"
+          columns={columns}
+          dataSource={data}
+          scroll={{ x: "max-content" }}
+        />
       </div>
-      <Table
-        className="sm:w-full md:w-full"
-        columns={columns}
-        dataSource={data}
-        scroll={{ x: "max-content" }}
-      />
-    </div>
+    </Spin>
   );
 };
 

@@ -10,17 +10,20 @@ import {
 } from "recharts";
 import moment from "moment";
 import PropTypes from "prop-types";
-import { Typography } from "antd";
+import { Spin, Typography } from "antd";
 
 const SalesReport = () => {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/sales-report"
       );
       setData(result.data);
+      setLoading(false);
     };
 
     fetchData();
@@ -86,26 +89,28 @@ const SalesReport = () => {
   };
 
   return (
-    <div>
-      {Object.entries(groupedData).map(([key, group], index) => (
-        <div key={key} className="mb-10 border-b border-gray-200 ml-6">
-          <Typography.Title level={4} className="text-center">
-            {key}
-          </Typography.Title>
-          <ResponsiveContainer width="90%" height={300}>
-            <BarChart width={500} height={300} data={group}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <YAxis domain={[0, "dataMax + 10000"]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Bar
-                dataKey="totalRevenue"
-                fill={colors[index % colors.length]}
-              />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      ))}
-    </div>
+    <Spin spinning={loading} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+      <div>
+        {Object.entries(groupedData).map(([key, group], index) => (
+          <div key={key} className="mb-10 border-b border-gray-200 ml-6">
+            <Typography.Title level={4} className="text-center">
+              {key}
+            </Typography.Title>
+            <ResponsiveContainer width="90%" height={300}>
+              <BarChart width={500} height={300} data={group}>
+                <CartesianGrid strokeDasharray="3 3" />
+                <YAxis domain={[0, "dataMax + 10000"]} />
+                <Tooltip content={<CustomTooltip />} />
+                <Bar
+                  dataKey="totalRevenue"
+                  fill={colors[index % colors.length]}
+                />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        ))}
+      </div>
+    </Spin>
   );
 };
 
