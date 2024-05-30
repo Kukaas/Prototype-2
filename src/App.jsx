@@ -1,9 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import LoginPage from './components/LoginPage';
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import LoginPage from "./components/LoginPage";
 import "./App.css";
-import AdminPage from './components/AdminPage';
-import EmployeePage from './components/EmployeePage';
-import MainContent from './components/dashboard/MainContent';
+import AdminPage from "./components/AdminPage";
+import EmployeePage from "./components/EmployeePage";
+import MainContent from "./components/dashboard/MainContent";
 
 function App() {
   return (

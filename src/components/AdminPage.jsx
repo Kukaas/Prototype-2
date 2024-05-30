@@ -1,14 +1,14 @@
 import Header from "./dashboard/Header";
 import MenuPage from "./dashboard/Menu";
 
-import { useMediaQuery } from 'react-responsive';
-import { Drawer, Button } from 'antd';
-import { MenuOutlined } from '@ant-design/icons';
+import { useMediaQuery } from "react-responsive";
+import { Drawer, Button } from "antd";
+import { MenuOutlined } from "@ant-design/icons";
 import { useState } from "react";
-import { useParams, Outlet } from 'react-router-dom';
+import { useParams, Outlet } from "react-router-dom";
 
 const AdminPage = () => {
-  const isSmallScreen = useMediaQuery({ query: '(max-width: 768px)' });
+  const isSmallScreen = useMediaQuery({ query: "(max-width: 768px)" });
   const [drawerVisible, setDrawerVisible] = useState(false);
   const { id } = useParams();
 
@@ -48,6 +48,6 @@ const AdminPage = () => {
       </div>
     </div>
   );
-}
+};
 
 export default AdminPage;

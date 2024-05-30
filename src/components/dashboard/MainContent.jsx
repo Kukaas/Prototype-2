@@ -1,9 +1,9 @@
-import { Routes, Route, Outlet } from 'react-router-dom';
-import Dashboard from './maincontent/Dashboard';
-import Production from './maincontent/Production';
-import FinishedProduct from './maincontent/FinishedProduct';
-import Employees from './maincontent/Employees';
-import SalesReport from './maincontent/SalesReport';
+import { Routes, Route, Outlet } from "react-router-dom";
+import Dashboard from "./maincontent/Dashboard";
+import Production from "./maincontent/Production";
+import FinishedProduct from "./maincontent/FinishedProduct";
+import Employees from "./maincontent/Employees";
+import SalesReport from "./maincontent/SalesReport";
 
 const MainContent = () => {
   return (
@@ -17,6 +17,6 @@ const MainContent = () => {
       </Route>
     </Routes>
   );
-}
+};
 
 export default MainContent;
