@@ -41,7 +41,7 @@ const columns = [
   },
 ];
 
-const DataTable = () => {
+const Orders = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -65,4 +65,4 @@ const DataTable = () => {
   );
 };
 
-export default DataTable;
+export default Orders;

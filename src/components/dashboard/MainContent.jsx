@@ -1,26 +1,21 @@
-import { Col, Row } from 'antd';
-import SalesReport from './maincontent/SalesReport';
+import { Routes, Route, Outlet } from 'react-router-dom';
+import Dashboard from './maincontent/Dashboard';
 import Production from './maincontent/Production';
-import Orders from './maincontent/Order';
-import { Routes, Route } from 'react-router-dom';
+import FinishedProduct from './maincontent/FinishedProduct';
+import Employees from './maincontent/Employees';
+import SalesReport from './maincontent/SalesReport';
 
 const MainContent = () => {
   return (
     <Routes>
-      <Route path="/" element={
-        <Row gutter={[16, 16]}>
-          <Col xs={24} md={12}>
-            <Orders />
-          </Col>
-          <Col xs={24} md={12}>
-            <SalesReport />
-          </Col>
-          <Col xs={24} md={24}>
-            <Production />
-          </Col>
-        </Row>
-      } />
-      <Route path="" element={<Production />} />
+      <Route path="/" element={<Outlet />}>
+        <Route index element={<Dashboard />} />
+        <Route path="production" element={<Production />} />
+        <Route path="finished-product" element={<FinishedProduct />} />
+        <Route path="sales-report" element={<SalesReport />} />
+        <Route path="employees" element={<Employees />} />
+
+      </Route>
     </Routes>
   );
 }
