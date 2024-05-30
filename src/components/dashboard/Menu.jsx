@@ -12,8 +12,9 @@ const { SubMenu } = Menu;
 
 const MenuPage = () => {
   const { id } = useParams();
+  
   return (
-    <Menu style={{ width: 400 }} mode="vertical" defaultSelectedKeys={["1"]}>
+    <Menu style={{ width: 350 }} mode="vertical" defaultSelectedKeys={["1"]}>
       <Menu.Item
         key="1"
         icon={<PieChartOutlined />}

@@ -1,13 +1,15 @@
-import { useState, useEffect } from 'react';
-import { Table, Typography } from 'antd';
-import axios from 'axios';
+import { useState, useEffect } from "react";
+import { Table, Button, Typography, Popconfirm, message } from "antd";
+import axios from "axios";
 
 const Production = () => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios('https://api-prototype-2-kukaas-projects.vercel.app/api/production');
+      const result = await axios(
+        "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
+      );
       setData(result.data);
     };
 
@@ -16,40 +18,77 @@ const Production = () => {
 
   const columns = [
     {
-      title: 'Assigned Employee',
-      dataIndex: ['user', 'name'],
-      key: 'name',
+      title: "Assigned Employee",
+      dataIndex: ["user", "name"],
+      key: "name",
     },
     {
-      title: 'Product Type',
-      dataIndex: 'productType',
-      key: 'productType',
+      title: "Product Type",
+      dataIndex: "productType",
+      key: "productType",
     },
     {
-      title: 'Size',
-      dataIndex: 'size',
-      key: 'size',
+      title: "Size",
+      dataIndex: "size",
+      key: "size",
     },
     {
-      title: 'Quantity',
-      dataIndex: 'quantity',
-      key: 'quantity',
+      title: "Quantity",
+      dataIndex: "quantity",
+      key: "quantity",
     },
     {
-      title: 'Status',
-      dataIndex: 'status',
-      key: 'status',
+      title: "Status",
+      dataIndex: "status",
+      key: "status",
+    },
+    {
+      title: "Actions",
+      key: "actions",
+      render: (text, record) => (
+        <div>
+          <Popconfirm
+            title="Are you sure delete this record?"
+            onConfirm={() => handleDelete(record)}
+            okText="Yes"
+            cancelText="No"
+          >
+            <Button type="primary" danger>
+              Delete
+            </Button>
+          </Popconfirm>
+        </div>
+      ),
     },
   ];
 
+  const handleDelete = async (record) => {
+    try {
+      const response = await axios.delete(
+        `https://api-prototype-2-kukaas-projects.vercel.app/api/production/${record.id}`
+      );
+      console.log("Delete response", response);
+      // After deleting, you can fetch the data again or filter out the deleted record from the state
+      const newData = data.filter((item) => item.id !== record.id);
+      message.success("Production deleted successfully");
+      setData(newData);
+    } catch (error) {
+      console.error("Failed to delete record", error);
+      message.error("Failed to delete Production");
+    }
+  };
+
   return (
-    <div>
-      <Table 
-        columns={columns} 
-        dataSource={data} 
-        rowKey="id" 
-        title={() => <Typography.Title level={4} className="text-center mb-4">Production</Typography.Title>}
-        pagination={{ pageSize: 2 }}
+    <div className="justify-center sm:w-full">
+      <div className="text-center mt-2">
+        <Typography.Title level={2}>Productions</Typography.Title>
+      </div>
+      <Table
+        className="sm:w-full md:w-full"
+        columns={columns}
+        dataSource={data}
+        rowKey="id"
+        scroll={{ x: "max-content" }}
       />
     </div>
   );

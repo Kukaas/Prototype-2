@@ -14,7 +14,6 @@ const MainContent = () => {
         <Route path="finished-product" element={<FinishedProduct />} />
         <Route path="sales-report" element={<SalesReport />} />
         <Route path="employees" element={<Employees />} />
-
       </Route>
     </Routes>
   );
