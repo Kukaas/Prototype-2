@@ -2,7 +2,6 @@ import {
   Button,
   Form,
   Input,
-  InputNumber,
   Modal,
   Popconfirm,
   Select,
@@ -24,6 +23,7 @@ const Orders = () => {
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm(); // Create a Form instance
+  const [selectedStatus, setSelectedStatus] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -63,21 +63,94 @@ const Orders = () => {
   const handleOk = async () => {
     try {
       const values = await form.validateFields();
+      console.log("Form Values: ", values); // Log the values to ensure they're correct
+      if (
+        !values.studentNumber ||
+        !values.studentName ||
+        !values.contactNumber ||
+        !values.gender ||
+        !values.status ||
+        !Array.isArray(values.orderItems)
+      ) {
+        message.error("Please fill all required fields.");
+        return;
+      }
+
+      values.orderItems.forEach((item) => {
+        console.log(item);
+        item.quantity = Number(item.quantity);
+        item.unitPrice = Number(item.unitPrice);
+        if (
+          !item.level ||
+          !item.productType ||
+          typeof item.quantity !== "number" ||
+          !item.size ||
+          typeof item.unitPrice !== "number"
+        ) {
+          message.error("Please fill all required fields in order items.");
+          return;
+        }
+      });
+
       const response = await axios.post(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/order",
         values
       );
-      setData([...data, response.data]);
-      form.resetFields();
-      setIsModalVisible(false);
-      console.log(values);
-      message.success("Order created successfully");
-  
-      // Redirect to the new page
-      navigate(-1);
+      console.log("Response: ", response); // Log the entire response object
+
+      if (response.status === 201) {
+        setData([...data, response.data]); // Use the response data to update the state
+        form.resetFields();
+        setIsModalVisible(false);
+        message.success("Order created successfully");
+        navigate(-1);
+      } else {
+        throw new Error("Unexpected server response");
+      }
     } catch (error) {
       console.error("Error:", error);
+      console.log("Error Response: ", error.response); // Log the error response
       message.error("An error occurred. Please try again later.");
+    }
+  };
+
+  const handleUpdate = async (id) => {
+    const status = selectedStatus[id];
+    console.log(status);
+    if (status) {
+      const orderToUpdate = data.find((order) => order.id === id);
+      if (!orderToUpdate) {
+        message.error("Order not found");
+        return;
+      }
+
+      const payload = {
+        studentNumber: orderToUpdate.studentNumber,
+        studentName: orderToUpdate.studentName,
+        gender: orderToUpdate.gender,
+        status: status,
+        orderItems: orderToUpdate.orderItems,
+      };
+
+      console.log("Updating status with payload:", payload);
+
+      try {
+        await axios.put(
+          `https://api-prototype-2-kukaas-projects.vercel.app/api/order/${id}`,
+          payload
+        );
+
+        setData((prevData) =>
+          prevData.map((item) => (item.id === id ? { ...item, status } : item))
+        );
+
+        message.success("Status updated successfully");
+      } catch (error) {
+        console.error("Failed to update status:", error);
+        message.error("Failed to update status");
+      }
+    } else {
+      message.error("Please select a status before updating");
     }
   };
 
@@ -122,7 +195,10 @@ const Orders = () => {
         <Select
           defaultValue={text}
           style={{ width: 120 }}
-          onChange={(value) => handleStatusChange(value, record)}
+          onChange={(value) =>
+            setSelectedStatus({ ...selectedStatus, [record.id]: value })
+          }
+          disabled={record.status === "CLAIMED"}
         >
           <Select.Option value="CLAIMED">CLAIMED</Select.Option>
           <Select.Option value="UNCLAIMED">UNCLAIMED</Select.Option>
@@ -145,14 +221,18 @@ const Orders = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button onClick={() => handleUpdate(record)}>Update</Button>
+          <Button onClick={() => handleUpdate(record.id)} >
+            Update
+          </Button>
           <Popconfirm
             title="Are you sure to delete this order?"
             onConfirm={() => handleDelete(record)}
             okText="Yes"
             cancelText="No"
           >
-            <Button>Delete</Button>
+            <Button type="primary" danger>
+              Delete
+            </Button>
           </Popconfirm>
         </Space>
       ),
@@ -259,7 +339,20 @@ const Orders = () => {
                       key={[field.key, "quantity"]}
                       rules={[{ required: true, message: "Missing quantity" }]}
                     >
-                      <InputNumber placeholder="Quantity" />
+                      <Input placeholder="Quantity" type="number" />
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "unitPrice"]}
+                      key={[field.key, "unitPrice"]}
+                      rules={[
+                        { required: true, message: "Missing Unit Price" },
+                        {
+                          pattern: /^\d+$/,
+                        },
+                      ]}
+                    >
+                      <Input placeholder="Unit Price" type="number" />
                     </Form.Item>
                     <Form.Item
                       {...field}
@@ -269,16 +362,7 @@ const Orders = () => {
                     >
                       <Input placeholder="Size" />
                     </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "unitPrice"]}
-                      key={[field.key, "unitPrice"]}
-                      rules={[
-                        { required: true, message: "Missing Unit Price" },
-                      ]}
-                    >
-                      <Input placeholder="Unit Price" />
-                    </Form.Item>
+
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </Space>
                 ))}

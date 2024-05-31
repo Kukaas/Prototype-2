@@ -65,7 +65,7 @@ const MenuPage = () => {
         <Link to={`/home/admin/${id}/orders`}>Orders</Link>
       </Menu.Item>
       <Menu.Item
-        key="7"
+        key="8"
         icon={<DesktopOutlined />}
         style={{ marginBottom: "10px" }}
       >
