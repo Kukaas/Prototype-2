@@ -89,28 +89,28 @@ const SalesReport = () => {
   };
 
   return (
-    <Spin spinning={loading} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-      <div>
-        {Object.entries(groupedData).map(([key, group], index) => (
-          <div key={key} className="mb-10 border-b border-gray-200 ml-6">
-            <Typography.Title level={4} className="text-center">
-              {key}
-            </Typography.Title>
-            <ResponsiveContainer width="90%" height={300}>
-              <BarChart width={500} height={300} data={group}>
-                <CartesianGrid strokeDasharray="3 3" />
-                <YAxis domain={[0, "dataMax + 10000"]} />
-                <Tooltip content={<CustomTooltip />} />
-                <Bar
-                  dataKey="totalRevenue"
-                  fill={colors[index % colors.length]}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        ))}
+<Spin spinning={loading} style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+  <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))', gap: '1rem' }}>
+    {Object.entries(groupedData).map(([key, group], index) => (
+      <div key={key} className="mb-10 border-b border-gray-200 ml-6">
+        <Typography.Title level={4} className="text-center">
+          {key}
+        </Typography.Title>
+        <ResponsiveContainer width="100%" height={300}>
+          <BarChart width={500} height={300} data={group}>
+            <CartesianGrid strokeDasharray="3 3" />
+            <YAxis domain={[0, "dataMax + 10000"]} />
+            <Tooltip content={<CustomTooltip />} />
+            <Bar
+              dataKey="totalRevenue"
+              fill={colors[index % colors.length]}
+            />
+          </BarChart>
+        </ResponsiveContainer>
       </div>
-    </Spin>
+    ))}
+  </div>
+</Spin>
   );
 };
 

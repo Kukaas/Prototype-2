@@ -4,6 +4,7 @@ import "./App.css";
 import AdminPage from "./components/AdminPage";
 import EmployeePage from "./components/EmployeePage";
 import MainContent from "./components/dashboard/MainContent";
+import EmployeeMainContent from './components/dashboard/EmployeeMainContent';
 import { useState } from "react";
 import UserContext from "./UserContext";
 
@@ -19,7 +20,9 @@ function App() {
             <Route path="/home/admin/:id/*" element={<AdminPage />}>
               <Route path="*" element={<MainContent />} />
             </Route>
-            <Route path="/home/employee/:id" element={<EmployeePage />} />
+            <Route path="/home/employee/:id" element={<EmployeePage />} >
+              <Route path="*" element={<EmployeeMainContent />} />
+            </Route>
           </Routes>
         </div>
       </Router>
