@@ -23,21 +23,21 @@ const Dashboard = () => {
   const [productTypes, setProductTypes] = useState([]);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch("https://api-prototype-2-kukaas-projects.vercel.app/api/sales-report")
       .then((response) => response.json())
       .then((data) => {
         const productTypes = data.map((item) => item.productType);
         // Set only the first 2-3 product types
-        setProductTypes(productTypes.slice(0, 3));
-        setLoading(false)
+        setProductTypes(productTypes);
+        setLoading(false);
       })
       .catch((error) => console.error("Error:", error));
-      setLoading(false)
+    setLoading(false);
   }, []);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     fetch("https://api-prototype-2-kukaas-projects.vercel.app/api/sales-report")
       .then((response) => response.json())
       .then((data) => {
@@ -45,10 +45,10 @@ const Dashboard = () => {
           productTypes.includes(item.productType)
         );
         setData(filteredData);
-        setLoading(false)
+        setLoading(false);
       })
       .catch((error) => console.error("Error:", error));
-      setLoading(false)
+    setLoading(false);
   }, [productTypes]);
 
   // Group data by productType
@@ -127,13 +127,13 @@ const Dashboard = () => {
   const [production, setProduction] = useState([]);
 
   useEffect(() => {
-    setLoading(true)
+    setLoading(true);
     const fetchData = async () => {
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
       );
       setProduction(result.data);
-      setLoading(false)
+      setLoading(false);
     };
 
     fetchData();
@@ -225,79 +225,79 @@ const Dashboard = () => {
 
   return (
     <Spin spinning={loading}>
-    <Row gutter={[16, 16]}>
-      <Col xs={24} md={12}>
-        <div>
-          <Table
-            className="w-full overflow-x-hidden"
-            columns={columnsOrders}
-            dataSource={order}
-            scroll={{ x: 800 }}
-            pagination={{ pageSize: 3 }}
-            title={() => (
-              <Typography.Title level={4} className="text-center mb-4">
-                Orders
-              </Typography.Title>
-            )}
-          />
-        </div>
-      </Col>
-      <Col xs={24} md={12}>
-        <div style={{ padding: 24 }}>
-          <Row justify="center">
-            <Col>
-              <Typography.Title level={4}>Sales Report</Typography.Title>
-            </Col>
-          </Row>
-          <ResponsiveContainer width="100%" height={200}>
-            <BarChart
-              data={formattedData}
-              margin={{
-                top: 5,
-                right: 30,
-                left: 20,
-                bottom: 5,
-              }}
-            >
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="productType" />
-              <YAxis domain={[0, 100000]} />
-              <Tooltip content={<CustomTooltip />} />
-              <Legend content={<CustomLegend />} />
-              <Bar
-                dataKey="totalRevenue"
-                isAnimationActive={true}
-                animationDuration={2000}
+      <Row gutter={[16, 16]}>
+        <Col xs={24} md={12}>
+          <div>
+            <Table
+              className="w-full overflow-x-hidden"
+              columns={columnsOrders}
+              dataSource={order}
+              scroll={{ x: 800 }}
+              pagination={{ pageSize: 3 }}
+              title={() => (
+                <Typography.Title level={4} className="text-center mb-4">
+                  Orders
+                </Typography.Title>
+              )}
+            />
+          </div>
+        </Col>
+        <Col xs={24} md={12}>
+          <div style={{ padding: 24 }}>
+            <Row justify="center">
+              <Col>
+                <Typography.Title level={4}>Sales Report</Typography.Title>
+              </Col>
+            </Row>
+            <ResponsiveContainer width="100%" height={200}>
+              <BarChart
+                data={formattedData}
+                margin={{
+                  top: 5,
+                  right: 30,
+                  left: 20,
+                  bottom: 5,
+                }}
               >
-                {formattedData.map((entry, index) => (
-                  <Cell
-                    key={`cell-${index}`}
-                    fill={colors[index % colors.length]}
-                  />
-                ))}
-              </Bar>
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-      </Col>
-      <Col xs={24} md={24}>
-        <div>
-          <Table
-            columns={columnsProduction}
-            dataSource={production}
-            rowKey="id"
-            title={() => (
-              <Typography.Title level={4} className="text-center mb-4">
-                Production
-              </Typography.Title>
-            )}
-            pagination={{ pageSize: 2 }}
-            scroll={{ x: "max-content" }}
-            className="sm:w-full md:w-full"
-          />
-        </div>
-      </Col>
-    </Row>
+                <CartesianGrid strokeDasharray="3 3" />
+                <XAxis dataKey="productType" />
+                <YAxis domain={[0, 100000]} />
+                <Tooltip content={<CustomTooltip />} />
+                <Legend content={<CustomLegend />} />
+                <Bar
+                  dataKey="totalRevenue"
+                  isAnimationActive={true}
+                  animationDuration={2000}
+                >
+                  {formattedData.map((entry, index) => (
+                    <Cell
+                      key={`cell-${index}`}
+                      fill={colors[index % colors.length]}
+                    />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </Col>
+        <Col xs={24} md={24}>
+          <div>
+            <Table
+              columns={columnsProduction}
+              dataSource={production}
+              rowKey="id"
+              title={() => (
+                <Typography.Title level={4} className="text-center mb-4">
+                  Production
+                </Typography.Title>
+              )}
+              pagination={{ pageSize: 2 }}
+              scroll={{ x: "max-content" }}
+              className="sm:w-full md:w-full"
+            />
+          </div>
+        </Col>
+      </Row>
     </Spin>
   );
 };

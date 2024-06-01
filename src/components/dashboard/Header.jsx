@@ -66,7 +66,6 @@ const AppHeader = () => {
         visible={isModalVisible}
         onOk={handleOk}
         onCancel={handleCancel}
-        okText="Edit Profile"
         className="text-xl md:text-2xl lg:text-3xl xl:text-4xl w-full md:w-3/4 lg:w-2/3 xl:w-1/2"
       >
         <p className="my-5 font-bold text-lg">

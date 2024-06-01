@@ -92,6 +92,7 @@ const Production = () => {
           dataSource={data}
           rowKey="id"
           scroll={{ x: "max-content" }}
+          pagination={{ pageSize: 5 }}
         />
       </div>
     </Spin>

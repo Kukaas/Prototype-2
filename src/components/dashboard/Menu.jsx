@@ -48,7 +48,7 @@ const MenuPage = () => {
         key="sub1"
         icon={<AppstoreOutlined />}
         title="Inventory"
-        style={{ marginBottom: "10px" }}
+        mode="vertical"
       >
         <Menu.Item key="5">
           <Link to={`/home/admin/${id}/raw-materials-inventory`}>

@@ -8,7 +8,7 @@ const EmployeeMenu = () => {
   return (
     <Menu style={{ width: 350 }} mode="vertical" defaultSelectedKeys={["1"]}>
       <Menu.Item
-        key="2"
+        key="1"
         icon={<DesktopOutlined />}
         style={{ marginBottom: "10px" }}
       >
