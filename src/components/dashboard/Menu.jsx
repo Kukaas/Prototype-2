@@ -50,7 +50,11 @@ const MenuPage = () => {
         title="Inventory"
         style={{ marginBottom: "10px" }}
       >
-        <Menu.Item key="5">Raw Material Inventory</Menu.Item>
+        <Menu.Item key="5">
+          <Link to={`/home/admin/${id}/raw-materials-inventory`}>
+            Raw Material Inventory
+          </Link>
+        </Menu.Item>
         <Menu.Item key="6">
           <Link to={`/home/admin/${id}/finished-product-inventory`}>
             Finished Product Inventory

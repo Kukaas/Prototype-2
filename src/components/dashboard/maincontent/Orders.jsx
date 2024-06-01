@@ -17,7 +17,6 @@ import {
   PlusOutlined,
   MinusCircleOutlined,
 } from "@ant-design/icons";
-import { useNavigate } from "react-router-dom";
 
 const Orders = () => {
   const [data, setData] = useState([]);
@@ -57,8 +56,6 @@ const Orders = () => {
   const handleCancel = () => {
     setIsModalVisible(false);
   };
-
-  const navigate = useNavigate();
 
   const handleOk = async () => {
     try {
@@ -103,7 +100,6 @@ const Orders = () => {
         form.resetFields();
         setIsModalVisible(false);
         message.success("Order created successfully");
-        navigate(-1);
       } else {
         throw new Error("Unexpected server response");
       }
@@ -221,9 +217,7 @@ const Orders = () => {
       key: "action",
       render: (text, record) => (
         <Space size="middle">
-          <Button onClick={() => handleUpdate(record.id)} >
-            Update
-          </Button>
+          <Button onClick={() => handleUpdate(record.id)}>Update</Button>
           <Popconfirm
             title="Are you sure to delete this order?"
             onConfirm={() => handleDelete(record)}
@@ -301,7 +295,7 @@ const Orders = () => {
             initialValue="UNCLAIMED"
             className="w-full"
           >
-            <Select>
+            <Select disabled>
               <Select.Option value="CLAIMED">CLAIMED</Select.Option>
               <Select.Option value="UNCLAIMED">UNCLAIMED</Select.Option>
             </Select>
@@ -321,7 +315,10 @@ const Orders = () => {
                       key={[field.key, "level"]}
                       rules={[{ required: true, message: "Missing level" }]}
                     >
-                      <Input placeholder="Level" />
+                      <Select placeholder="Level">
+                        <Select.Option value="SHS">SHS</Select.Option>
+                        <Select.Option value="COLLEGE">COLLEGE</Select.Option>
+                      </Select>
                     </Form.Item>
                     <Form.Item
                       {...field}
@@ -332,6 +329,27 @@ const Orders = () => {
                       ]}
                     >
                       <Input placeholder="Product Type" />
+                    </Form.Item>
+                    <Form.Item
+                      {...field}
+                      name={[field.name, "size"]}
+                      key={[field.key, "size"]}
+                      rules={[{ required: true, message: "Missing size" }]}
+                    >
+                      <Select placeholder="Select a size">
+                        <Select.Option value="S14">S14</Select.Option>
+                        <Select.Option value="S15">S15</Select.Option>
+                        <Select.Option value="S16">S16</Select.Option>
+                        <Select.Option value="S7">S7</Select.Option>
+                        <Select.Option value="S18">S18</Select.Option>
+                        <Select.Option value="S18+">S18+</Select.Option>
+                        <Select.Option value="S19+">S19+</Select.Option>
+                        <Select.Option value="S24">S24</Select.Option>
+                        <Select.Option value="S25">S25</Select.Option>
+                        <Select.Option value="S26">S26</Select.Option>
+                        <Select.Option value="S27">S27</Select.Option>
+                        <Select.Option value="S28+">S28+</Select.Option>
+                      </Select>
                     </Form.Item>
                     <Form.Item
                       {...field}
@@ -354,15 +372,6 @@ const Orders = () => {
                     >
                       <Input placeholder="Unit Price" type="number" />
                     </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "size"]}
-                      key={[field.key, "size"]}
-                      rules={[{ required: true, message: "Missing size" }]}
-                    >
-                      <Input placeholder="Size" />
-                    </Form.Item>
-
                     <MinusCircleOutlined onClick={() => remove(field.name)} />
                   </Space>
                 ))}

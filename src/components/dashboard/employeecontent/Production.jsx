@@ -149,7 +149,6 @@ const Production = () => {
             <Select placeholder="Select a product type">
               <Select.Option value="BLOUSE">BLOUSE</Select.Option>
               <Select.Option value="SKIRT">SKIRT</Select.Option>
-              <Select.Option value="NECKTIE">NECKTIE</Select.Option>
               <Select.Option value="POLO">POLO</Select.Option>
               <Select.Option value="PANTS">PANTS</Select.Option>
               <Select.Option value="LOGO">LOGO</Select.Option>
