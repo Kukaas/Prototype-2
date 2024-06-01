@@ -35,10 +35,12 @@ const RawMaterial = () => {
 
   const handleQuantityChange = (value, record) => {
     const newData = [...data];
-    const index = newData.findIndex((item) => record.key === item.key);
-    const item = newData[index];
-    newData.splice(index, 1, { ...item, quantity: value });
-    setData(newData);
+    const index = newData.findIndex((item) => record.id === item.id); // Use record.id instead of record.key
+    if (index > -1) {
+      const item = newData[index];
+      newData[index] = { ...item, quantity: value }; // Only update the quantity of the item
+      setData(newData);
+    }
   };
 
   const handleUpdate = async (id) => {
@@ -68,6 +70,8 @@ const RawMaterial = () => {
       const updatedData = data.map((item) =>
         item.id === id ? { ...item, ...payload } : item
       );
+
+      // Set the state with the updated data
       setData(updatedData);
 
       message.success("Record updated successfully");
