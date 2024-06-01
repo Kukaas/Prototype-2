@@ -60,12 +60,6 @@ const FinishedProduct = () => {
       width: 100,
     },
     {
-      title: "Employee",
-      dataIndex: ["user", "name"],
-      key: "name",
-      width: 200,
-    },
-    {
       title: "Actions",
       key: "actions",
       width: 100,

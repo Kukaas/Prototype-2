@@ -2,7 +2,6 @@ import { Menu } from "antd";
 import {
   PieChartOutlined,
   DesktopOutlined,
-  ContainerOutlined,
 } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
@@ -24,13 +23,6 @@ const EmployeeMenu = () => {
         style={{ marginBottom: "10px" }}
       >
         <Link to={`/home/employee/${id}/production`}>Production</Link>
-      </Menu.Item>
-      <Menu.Item
-        key="3"
-        icon={<ContainerOutlined />}
-        style={{ marginBottom: "10px" }}
-      >
-        <Link to={`/home/employee/${id}/finished-product`}>Finished Product</Link>
       </Menu.Item>
     </Menu>
   );
