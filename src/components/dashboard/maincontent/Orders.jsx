@@ -328,7 +328,18 @@ const Orders = () => {
                         { required: true, message: "Missing product type" },
                       ]}
                     >
-                      <Input placeholder="Product Type" />
+                      <Select placeholder="Select a product type">
+                        <Select.Option value="SKIRT">SKIRT</Select.Option>
+                        <Select.Option value="POLO">POLO</Select.Option>
+                        <Select.Option value="PANTS">PANTS</Select.Option>
+                        <Select.Option value="BLOUSE">BLOUSE</Select.Option>
+                        <Select.Option value="PE TSHIRT">
+                          PE TSHIRT
+                        </Select.Option>
+                        <Select.Option value="PE JOGGING PANT">
+                          PE JOGGING PANT
+                        </Select.Option>
+                      </Select>
                     </Form.Item>
                     <Form.Item
                       {...field}
