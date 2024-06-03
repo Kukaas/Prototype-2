@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Table, Button, Typography, Popconfirm, message, Spin } from "antd";
+import { Table, Button, Typography, Popconfirm, message, Spin, Input } from "antd";
 import axios from "axios";
 
 const Production = () => {
@@ -80,11 +80,46 @@ const Production = () => {
     }
   };
 
+  const [productionName, setProductionName] = useState([]);
+
+  const fetchProductionData = async (value = "") => {
+    let url;
+
+    // Check if the value is empty
+    if (value.trim() === "") {
+      // If it's empty, fetch all data
+      setLoading(true);
+      url = `https://api-prototype-2-kukaas-projects.vercel.app/api/production`;
+    } else {
+      setLoading(true);
+      // If it's not empty, fetch the data for the given student number
+      url = `https://api-prototype-2-kukaas-projects.vercel.app/api/production/name/${productionName}`;
+    }
+
+    const response = await axios.get(url);
+
+    setData(response.data);
+    setLoading(false);
+  };
+
   return (
     <Spin spinning={loading}>
       <div className="justify-center sm:w-full">
-        <div className="text-center mt-2">
-          <Typography.Title level={2}>Productions</Typography.Title>
+        <div>
+          <Typography.Title level={2} className="text-center mt-2">Productions</Typography.Title>
+          <Input.Search
+                placeholder="Search productions by name"
+                enterButton="Search"
+                size="large"
+                className="w-1/2 mx-auto mb-4" 
+                onSearch={fetchProductionData}
+                onChange={(e) => {
+                  setProductionName(e.target.value);
+                  if (e.target.value.trim() === "") {
+                    fetchProductionData();
+                  }
+                }}
+              />
         </div>
         <Table
           className="sm:w-full md:w-full"

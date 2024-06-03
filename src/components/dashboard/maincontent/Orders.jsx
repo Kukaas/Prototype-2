@@ -157,6 +157,27 @@ const Orders = () => {
     }
   };
 
+  const [studentNumber, setStudentNumber] = useState([]);
+  const fetchStudentData = async (value = "") => {
+    let url;
+
+    // Check if the value is empty
+    if (value.trim() === "") {
+      // If it's empty, fetch all data
+      setLoading(true);
+      url = `https://api-prototype-2-kukaas-projects.vercel.app/api/order`;
+    } else {
+      setLoading(true);
+      // If it's not empty, fetch the data for the given student number
+      url = `https://api-prototype-2-kukaas-projects.vercel.app/api/order/student/${studentNumber}`;
+    }
+
+    const response = await axios.get(url);
+
+    setData(response.data);
+    setLoading(false);
+  };
+
   const columns = [
     {
       title: "Student Number",
@@ -175,7 +196,10 @@ const Orders = () => {
       dataIndex: "totalPrice",
       key: "totalPrice",
       width: 120,
-      render: (text) => `₱ ${parseFloat(text).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
+      render: (text) =>
+        `₱ ${parseFloat(text)
+          .toFixed(2)
+          .replace(/\d(?=(\d{3})+\.)/g, "$&,")}`,
     },
     {
       title: "Items",
@@ -241,23 +265,42 @@ const Orders = () => {
     },
   ];
   return (
-    <Spin spinning={loading} >
+    <Spin spinning={loading}>
       <div>
         <Table
           columns={columns}
           dataSource={data}
           rowKey="id"
           title={() => (
-            <Typography.Title level={4} className="text-center mb-4">
-              Orders
-            </Typography.Title>
+            <>
+              <Typography.Title level={2} className="text-center mb-4">
+                Orders
+              </Typography.Title>
+              <Input.Search
+                placeholder="Enter student number"
+                enterButton="Search"
+                size="large"
+                className="w-1/2 mx-auto mb-4" 
+                onSearch={fetchStudentData}
+                onChange={(e) => {
+                  setStudentNumber(e.target.value);
+                  if (e.target.value.trim() === "") {
+                    fetchStudentData();
+                  }
+                }}
+              />
+            </>
           )}
           pagination={{ pageSize: 7 }}
           scroll={{ x: "max-content" }}
           className="sm:w-full md:w-full"
         />
         <Modal
-          title={<Title level={3} style={{ textAlign: 'center' }}>Create Order</Title>}
+          title={
+            <Title level={3} style={{ textAlign: "center" }}>
+              Create Order
+            </Title>
+          }
           visible={isModalVisible}
           onCancel={handleCancel}
           onOk={handleOk}
@@ -273,7 +316,10 @@ const Orders = () => {
               rules={[{ required: true }]}
               className="w-full font-bold"
             >
-              <Input className="w-full font-normal" placeholder="Enter student number"/>
+              <Input
+                className="w-full font-normal"
+                placeholder="Enter student number"
+              />
             </Form.Item>
             <Form.Item
               name="studentName"
@@ -281,7 +327,10 @@ const Orders = () => {
               rules={[{ required: true }]}
               className="w-full font-bold"
             >
-              <Input className="w-full font-normal" placeholder="Enter student name"/>
+              <Input
+                className="w-full font-normal"
+                placeholder="Enter student name"
+              />
             </Form.Item>
             <Form.Item
               name="contactNumber"
@@ -289,7 +338,10 @@ const Orders = () => {
               rules={[{ required: true }]}
               className="w-full font-bold"
             >
-              <Input className="w-full font-normal" placeholder="Enter contact number"/>
+              <Input
+                className="w-full font-normal"
+                placeholder="Enter contact number"
+              />
             </Form.Item>
             <Form.Item
               name="gender"
@@ -297,7 +349,10 @@ const Orders = () => {
               rules={[{ required: true }]}
               className="w-full font-bold"
             >
-              <Select placeholder="Selecet a gender" className="w-full font-normal">
+              <Select
+                placeholder="Selecet a gender"
+                className="w-full font-normal"
+              >
                 <Select.Option value="MALE">Male</Select.Option>
                 <Select.Option value="FEMALE">Female</Select.Option>
               </Select>
