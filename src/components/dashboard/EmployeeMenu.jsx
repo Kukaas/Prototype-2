@@ -1,5 +1,5 @@
 import { Menu } from "antd";
-import { DesktopOutlined, DatabaseOutlined } from "@ant-design/icons";
+import { AppstoreAddOutlined, DatabaseOutlined } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
 const EmployeeMenu = () => {
@@ -9,7 +9,7 @@ const EmployeeMenu = () => {
     <Menu style={{ width: 350 }} mode="vertical" defaultSelectedKeys={["1"]}>
       <Menu.Item
         key="1"
-        icon={<DesktopOutlined />}
+        icon={<AppstoreAddOutlined />}
         style={{ marginBottom: "10px" }}
       >
         <Link to={`/home/employee/${id}/production`}>Production</Link>

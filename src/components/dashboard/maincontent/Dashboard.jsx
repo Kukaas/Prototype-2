@@ -132,7 +132,7 @@ const Dashboard = () => {
       const result = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/production"
       );
-      setProduction(result.data);
+      setProduction(result.data.slice(0, 2));
       setLoading(false);
     };
 
@@ -176,7 +176,7 @@ const Dashboard = () => {
       const response = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/order"
       );
-      setOrders(response.data);
+      setOrders(response.data.slice(0, 2));
     };
 
     fetchData();
@@ -229,11 +229,11 @@ const Dashboard = () => {
         <Col xs={24} md={12}>
           <div>
             <Table
-              className="w-full overflow-x-hidden"
+              className="w-full overflow-x-hidden sm:w-full md:w-full"
               columns={columnsOrders}
               dataSource={order}
-              scroll={{ x: 800 }}
-              pagination={{ pageSize: 3 }}
+              scroll={{ x: "max-content" }}
+              pagination={false}
               title={() => (
                 <Typography.Title level={4} className="text-center mb-4">
                   Orders
@@ -291,7 +291,7 @@ const Dashboard = () => {
                   Production
                 </Typography.Title>
               )}
-              pagination={{ pageSize: 2 }}
+              pagination={false}
               scroll={{ x: "max-content" }}
               className="sm:w-full md:w-full"
             />

@@ -6,6 +6,7 @@ import {
   Popconfirm,
   Select,
   Space,
+  Spin,
   Table,
   Typography,
   message,
@@ -18,18 +19,23 @@ import {
   MinusCircleOutlined,
 } from "@ant-design/icons";
 
+const { Title } = Typography;
+
 const Orders = () => {
   const [data, setData] = useState([]);
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [form] = Form.useForm(); // Create a Form instance
   const [selectedStatus, setSelectedStatus] = useState({});
+  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const fetchData = async () => {
+      setLoading(true);
       const response = await axios(
         "https://api-prototype-2-kukaas-projects.vercel.app/api/order"
       );
       setData(response.data);
+      setLoading(false);
     };
 
     fetchData();
@@ -55,6 +61,7 @@ const Orders = () => {
 
   const handleCancel = () => {
     setIsModalVisible(false);
+    form.resetFields();
   };
 
   const handleOk = async () => {
@@ -164,16 +171,17 @@ const Orders = () => {
       width: 150,
     },
     {
-      title: "Total Price",
+      title: "Total Price(₱)",
       dataIndex: "totalPrice",
       key: "totalPrice",
-      width: 100,
+      width: 120,
+      render: (text) => `₱ ${parseFloat(text).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,')}`,
     },
     {
       title: "Items",
       dataIndex: "orderItems",
       key: "orderItems",
-      width: 150,
+      width: 180,
       render: (items) =>
         items.map((item, index) => (
           <React.Fragment key={index}>
@@ -233,175 +241,183 @@ const Orders = () => {
     },
   ];
   return (
-    <div>
-      <Table
-        columns={columns}
-        dataSource={data}
-        rowKey="id"
-        title={() => (
-          <Typography.Title level={4} className="text-center mb-4">
-            Orders
-          </Typography.Title>
-        )}
-        pagination={{ pageSize: 7 }}
-        scroll={{ x: "max-content" }}
-        className="sm:w-full md:w-full"
-      />
-      <Modal
-        title="Create Order"
-        visible={isModalVisible}
-        onCancel={handleCancel}
-        onOk={handleOk}
-      >
-        <Form form={form} layout="vertical" className="space-y-2 md:space-y-4">
-          <Form.Item
-            name="studentNumber"
-            label="Student Number"
-            rules={[{ required: true }]}
-            className="w-full"
+    <Spin spinning={loading} >
+      <div>
+        <Table
+          columns={columns}
+          dataSource={data}
+          rowKey="id"
+          title={() => (
+            <Typography.Title level={4} className="text-center mb-4">
+              Orders
+            </Typography.Title>
+          )}
+          pagination={{ pageSize: 7 }}
+          scroll={{ x: "max-content" }}
+          className="sm:w-full md:w-full"
+        />
+        <Modal
+          title={<Title level={3} style={{ textAlign: 'center' }}>Create Order</Title>}
+          visible={isModalVisible}
+          onCancel={handleCancel}
+          onOk={handleOk}
+        >
+          <Form
+            form={form}
+            layout="vertical"
+            className="space-y-2 md:space-y-4"
           >
-            <Input className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="studentName"
-            label="Student Name"
-            rules={[{ required: true }]}
-            className="w-full"
-          >
-            <Input className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="contactNumber"
-            label="Contact Number"
-            rules={[{ required: true }]}
-            className="w-full"
-          >
-            <Input className="w-full" />
-          </Form.Item>
-          <Form.Item
-            name="gender"
-            label="Gender"
-            rules={[{ required: true }]}
-            className="w-full"
-          >
-            <Select>
-              <Select.Option value="MALE">Male</Select.Option>
-              <Select.Option value="FEMALE">Female</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.Item
-            name="status"
-            label="Status"
-            initialValue="UNCLAIMED"
-            className="w-full"
-          >
-            <Select disabled>
-              <Select.Option value="CLAIMED">CLAIMED</Select.Option>
-              <Select.Option value="UNCLAIMED">UNCLAIMED</Select.Option>
-            </Select>
-          </Form.Item>
-          <Form.List name="orderItems">
-            {(fields, { add, remove }) => (
-              <>
-                {fields.map((field) => (
-                  <Space
-                    key={field.key}
-                    style={{ display: "flex", marginBottom: 8 }}
-                    align="baseline"
-                  >
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "level"]}
-                      key={[field.key, "level"]}
-                      rules={[{ required: true, message: "Missing level" }]}
+            <Form.Item
+              name="studentNumber"
+              label="Student Number"
+              rules={[{ required: true }]}
+              className="w-full font-bold"
+            >
+              <Input className="w-full font-normal" placeholder="Enter student number"/>
+            </Form.Item>
+            <Form.Item
+              name="studentName"
+              label="Student Name"
+              rules={[{ required: true }]}
+              className="w-full font-bold"
+            >
+              <Input className="w-full font-normal" placeholder="Enter student name"/>
+            </Form.Item>
+            <Form.Item
+              name="contactNumber"
+              label="Contact Number"
+              rules={[{ required: true }]}
+              className="w-full font-bold"
+            >
+              <Input className="w-full font-normal" placeholder="Enter contact number"/>
+            </Form.Item>
+            <Form.Item
+              name="gender"
+              label="Gender"
+              rules={[{ required: true }]}
+              className="w-full font-bold"
+            >
+              <Select placeholder="Selecet a gender" className="w-full font-normal">
+                <Select.Option value="MALE">Male</Select.Option>
+                <Select.Option value="FEMALE">Female</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.Item
+              name="status"
+              label="Status"
+              initialValue="UNCLAIMED"
+              className="w-full font-bold"
+            >
+              <Select disabled>
+                <Select.Option value="CLAIMED">CLAIMED</Select.Option>
+                <Select.Option value="UNCLAIMED">UNCLAIMED</Select.Option>
+              </Select>
+            </Form.Item>
+            <Form.List name="orderItems">
+              {(fields, { add, remove }) => (
+                <>
+                  {fields.map((field) => (
+                    <Space
+                      key={field.key}
+                      style={{ display: "flex", marginBottom: 8 }}
+                      align="baseline"
                     >
-                      <Select placeholder="Level">
-                        <Select.Option value="SHS">SHS</Select.Option>
-                        <Select.Option value="COLLEGE">COLLEGE</Select.Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "productType"]}
-                      key={[field.key, "productType"]}
-                      rules={[
-                        { required: true, message: "Missing product type" },
-                      ]}
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "level"]}
+                        key={[field.key, "level"]}
+                        rules={[{ required: true, message: "Missing level" }]}
+                      >
+                        <Select placeholder="Level">
+                          <Select.Option value="SHS">SHS</Select.Option>
+                          <Select.Option value="COLLEGE">COLLEGE</Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "productType"]}
+                        key={[field.key, "productType"]}
+                        rules={[
+                          { required: true, message: "Missing product type" },
+                        ]}
+                      >
+                        <Select placeholder="Select a product type">
+                          <Select.Option value="SKIRT">SKIRT</Select.Option>
+                          <Select.Option value="POLO">POLO</Select.Option>
+                          <Select.Option value="PANTS">PANTS</Select.Option>
+                          <Select.Option value="BLOUSE">BLOUSE</Select.Option>
+                          <Select.Option value="PE TSHIRT">
+                            PE TSHIRT
+                          </Select.Option>
+                          <Select.Option value="PE JOGGING PANT">
+                            PE JOGGING PANT
+                          </Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "size"]}
+                        key={[field.key, "size"]}
+                        rules={[{ required: true, message: "Missing size" }]}
+                      >
+                        <Select placeholder="Select a size">
+                          <Select.Option value="S14">S14</Select.Option>
+                          <Select.Option value="S15">S15</Select.Option>
+                          <Select.Option value="S16">S16</Select.Option>
+                          <Select.Option value="S7">S7</Select.Option>
+                          <Select.Option value="S18">S18</Select.Option>
+                          <Select.Option value="S18+">S18+</Select.Option>
+                          <Select.Option value="S19+">S19+</Select.Option>
+                          <Select.Option value="S24">S24</Select.Option>
+                          <Select.Option value="S25">S25</Select.Option>
+                          <Select.Option value="S26">S26</Select.Option>
+                          <Select.Option value="S27">S27</Select.Option>
+                          <Select.Option value="S28+">S28+</Select.Option>
+                        </Select>
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "quantity"]}
+                        key={[field.key, "quantity"]}
+                        rules={[
+                          { required: true, message: "Missing quantity" },
+                        ]}
+                      >
+                        <Input placeholder="Quantity" type="number" />
+                      </Form.Item>
+                      <Form.Item
+                        {...field}
+                        name={[field.name, "unitPrice"]}
+                        key={[field.key, "unitPrice"]}
+                        rules={[
+                          { required: true, message: "Missing Unit Price" },
+                          {
+                            pattern: /^\d+$/,
+                          },
+                        ]}
+                      >
+                        <Input placeholder="Unit Price" type="number" />
+                      </Form.Item>
+                      <MinusCircleOutlined onClick={() => remove(field.name)} />
+                    </Space>
+                  ))}
+                  <Form.Item>
+                    <Button
+                      type="dashed"
+                      onClick={() => add()}
+                      block
+                      icon={<PlusOutlined />}
                     >
-                      <Select placeholder="Select a product type">
-                        <Select.Option value="SKIRT">SKIRT</Select.Option>
-                        <Select.Option value="POLO">POLO</Select.Option>
-                        <Select.Option value="PANTS">PANTS</Select.Option>
-                        <Select.Option value="BLOUSE">BLOUSE</Select.Option>
-                        <Select.Option value="PE TSHIRT">
-                          PE TSHIRT
-                        </Select.Option>
-                        <Select.Option value="PE JOGGING PANT">
-                          PE JOGGING PANT
-                        </Select.Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "size"]}
-                      key={[field.key, "size"]}
-                      rules={[{ required: true, message: "Missing size" }]}
-                    >
-                      <Select placeholder="Select a size">
-                        <Select.Option value="S14">S14</Select.Option>
-                        <Select.Option value="S15">S15</Select.Option>
-                        <Select.Option value="S16">S16</Select.Option>
-                        <Select.Option value="S7">S7</Select.Option>
-                        <Select.Option value="S18">S18</Select.Option>
-                        <Select.Option value="S18+">S18+</Select.Option>
-                        <Select.Option value="S19+">S19+</Select.Option>
-                        <Select.Option value="S24">S24</Select.Option>
-                        <Select.Option value="S25">S25</Select.Option>
-                        <Select.Option value="S26">S26</Select.Option>
-                        <Select.Option value="S27">S27</Select.Option>
-                        <Select.Option value="S28+">S28+</Select.Option>
-                      </Select>
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "quantity"]}
-                      key={[field.key, "quantity"]}
-                      rules={[{ required: true, message: "Missing quantity" }]}
-                    >
-                      <Input placeholder="Quantity" type="number" />
-                    </Form.Item>
-                    <Form.Item
-                      {...field}
-                      name={[field.name, "unitPrice"]}
-                      key={[field.key, "unitPrice"]}
-                      rules={[
-                        { required: true, message: "Missing Unit Price" },
-                        {
-                          pattern: /^\d+$/,
-                        },
-                      ]}
-                    >
-                      <Input placeholder="Unit Price" type="number" />
-                    </Form.Item>
-                    <MinusCircleOutlined onClick={() => remove(field.name)} />
-                  </Space>
-                ))}
-                <Form.Item>
-                  <Button
-                    type="dashed"
-                    onClick={() => add()}
-                    block
-                    icon={<PlusOutlined />}
-                  >
-                    Add Order Item
-                  </Button>
-                </Form.Item>
-              </>
-            )}
-          </Form.List>
-        </Form>
-      </Modal>
-    </div>
+                      Add Order Item
+                    </Button>
+                  </Form.Item>
+                </>
+              )}
+            </Form.List>
+          </Form>
+        </Modal>
+      </div>
+    </Spin>
   );
 };
 

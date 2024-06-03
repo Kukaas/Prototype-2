@@ -76,6 +76,8 @@ const LoginPage = () => {
         columns={columns}
         loading={loading}
         rowKey={(record) => record.id}
+        scroll={{ x: "max-content" }}
+        className="sm:w-full md:w-full"
       />
     </div>
   );

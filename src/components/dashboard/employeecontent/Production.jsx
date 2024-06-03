@@ -17,6 +17,8 @@ import PropTypes from "prop-types";
 import { useParams } from "react-router-dom";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
+const { Title } = Typography;
+
 const Production = () => {
   const [productions, setProductions] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -97,7 +99,6 @@ const Production = () => {
         values
       );
       setProductions((prevProductions) => [...prevProductions, response.data]);
-
       message.success("Production added successfully");
       console.log("Production added successfully:", response.data);
       form.resetFields();
@@ -105,6 +106,7 @@ const Production = () => {
     } catch (error) {
       message.error("Failed to add production");
       console.error("Failed to add production:", error);
+      setLoading(false);
     }
   };
 
@@ -116,7 +118,7 @@ const Production = () => {
   const ProductionModal = ({ isVisible, handleOk, handleCancel }) => {
     return (
       <Modal
-        title="Add Production"
+      title={<Title level={3} style={{ textAlign: 'center' }}>Add Production</Title>}
         visible={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -130,10 +132,10 @@ const Production = () => {
           <Form.Item
             label="Level"
             name="level"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please select the level!" }]}
           >
-            <Select placeholder="Select a level">
+            <Select placeholder="Select a level" className="w-full font-normal">
               <Select.Option value="COLLEGE">COLLEGE</Select.Option>
               <Select.Option value="SHS">SHS</Select.Option>
             </Select>
@@ -141,12 +143,12 @@ const Production = () => {
           <Form.Item
             label="Product Type"
             name="productType"
-            className="w-full"
+            className="w-full font-bold"
             rules={[
               { required: true, message: "Please select the product type!" },
             ]}
           >
-            <Select placeholder="Select a product type">
+            <Select placeholder="Select a product type" className="w-full font-normal">
               <Select.Option value="BLOUSE">BLOUSE</Select.Option>
               <Select.Option value="SKIRT">SKIRT</Select.Option>
               <Select.Option value="POLO">POLO</Select.Option>
@@ -157,22 +159,22 @@ const Production = () => {
           <Form.Item
             label="Quantity"
             name="quantity"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please input the quantity!" }]}
           >
             <InputNumber
               min={1}
-              className="w-full"
+              className="w-full font-normal"
               placeholder="Enter Quantity"
             />
           </Form.Item>
           <Form.Item
             label="Size"
             name="size"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please select the size!" }]}
           >
-            <Select placeholder="Select a size">
+            <Select placeholder="Select a size" className="w-full font-normal">
               <Select.Option value="S14">S14</Select.Option>
               <Select.Option value="S15">S15</Select.Option>
               <Select.Option value="S16">S16</Select.Option>
@@ -190,10 +192,10 @@ const Production = () => {
           <Form.Item
             label="Email"
             name="email"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please input the email!" }]}
           >
-            <Input type="email" placeholder="Enter your email" />
+            <Input type="email" placeholder="Enter your email" className="w-full font-normal"/>
           </Form.Item>
         </Form>
       </Modal>
@@ -277,12 +279,7 @@ const Production = () => {
       ),
       key: "actions",
       render: (text, record) => (
-        <Button
-          className="border-blue-500 text-blue-500 hover:bg-blue-500 hover:text-white"
-          onClick={() => handleUpdate(record.id)}
-        >
-          Update
-        </Button>
+        <Button onClick={() => handleUpdate(record.id)}>Update</Button>
       ),
     },
   ];

@@ -26,7 +26,7 @@ const AdminPage = () => {
       <div className="flex flex-grow">
         {isSmallScreen ? (
           <>
-            <Button type="primary" onClick={showDrawer}>
+            <Button onClick={showDrawer}  className="mt-4 ml-4">
               <MenuOutlined />
             </Button>
             <Drawer

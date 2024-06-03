@@ -16,6 +16,8 @@ import {
 import PropTypes from "prop-types";
 import { PlusCircleOutlined } from "@ant-design/icons";
 
+const { Title } = Typography;
+
 const RawMaterial = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -161,7 +163,7 @@ const RawMaterial = () => {
   const RawMaterialModal = ({ isVisible, handleOk, handleCancel }) => {
     return (
       <Modal
-        title="Raw Material"
+        title={<Title level={3} style={{ textAlign: 'center' }}>Add Raw Material</Title>}
         visible={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -170,7 +172,7 @@ const RawMaterial = () => {
           <Form.Item
             label="Raw Material Type"
             name="rawMaterialType"
-            className="w-full"
+            className="w-full font-bold"
             rules={[
               {
                 required: true,
@@ -178,25 +180,25 @@ const RawMaterial = () => {
               },
             ]}
           >
-            <Input className="w-full" />
+            <Input className="w-full font-normal" placeholder="Enter raw material type"/>
           </Form.Item>
 
           <Form.Item
             label="Quantity"
             name="quantity"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please input the quantity!" }]}
           >
-            <InputNumber min={0} className="w-full" />
+            <InputNumber min={0} className="w-full font-normal" placeholder="Enter quantity"/>
           </Form.Item>
 
           <Form.Item
             label="Unit"
             name="unit"
-            className="w-full"
+            className="w-full font-bold"
             rules={[{ required: true, message: "Please input the unit!" }]}
           >
-            <Input className="w-full" />
+            <Input className="w-full font-normal" placeholder="Enter unit e.g Yard"/>
           </Form.Item>
         </Form>
       </Modal>
@@ -232,12 +234,13 @@ const RawMaterial = () => {
       title: "Unit",
       dataIndex: "unit",
       key: "unit",
+      width: 150
     },
     {
       title: "Status",
       dataIndex: "status",
       key: "status",
-      width: 150,
+      width: 180,
     },
     {
       title: (
@@ -256,7 +259,6 @@ const RawMaterial = () => {
       render: (record) => (
         <div>
           <Button
-            type="primary"
             style={{ marginRight: "10px" }}
             onClick={() => handleUpdate(record.id)}
           >

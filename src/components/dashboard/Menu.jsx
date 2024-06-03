@@ -1,11 +1,14 @@
 import { Menu } from "antd";
 import {
   AppstoreOutlined,
+  AppstoreAddOutlined,
   PieChartOutlined,
   DesktopOutlined,
   ContainerOutlined,
   MailOutlined,
   OrderedListOutlined,
+  DatabaseOutlined,
+  HddOutlined
 } from "@ant-design/icons";
 import { Link, useParams } from "react-router-dom";
 
@@ -25,7 +28,7 @@ const MenuPage = () => {
       </Menu.Item>
       <Menu.Item
         key="2"
-        icon={<DesktopOutlined />}
+        icon={<AppstoreAddOutlined />}
         style={{ marginBottom: "10px" }}
       >
         <Link to={`/home/admin/${id}/production`}>Production</Link>
@@ -50,12 +53,12 @@ const MenuPage = () => {
         title="Inventory"
         mode="vertical"
       >
-        <Menu.Item key="5">
+        <Menu.Item key="5" icon={<DatabaseOutlined />}>
           <Link to={`/home/admin/${id}/raw-materials-inventory`}>
             Raw Material Inventory
           </Link>
         </Menu.Item>
-        <Menu.Item key="6">
+        <Menu.Item key="6" icon={<HddOutlined />}>
           <Link to={`/home/admin/${id}/finished-product-inventory`}>
             Finished Product Inventory
           </Link>
