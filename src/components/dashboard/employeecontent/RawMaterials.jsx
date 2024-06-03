@@ -113,6 +113,7 @@ const RawMaterials = () => {
           <Button
             style={{ marginRight: "10px" }}
             onClick={() => handleUpdate(record.id)}
+            type='primary'
           >
             Update
           </Button>
