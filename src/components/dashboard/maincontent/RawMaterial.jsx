@@ -166,10 +166,11 @@ const RawMaterial = () => {
         onOk={handleOk}
         onCancel={handleCancel}
       >
-        <Form layout="vertical" form={form}>
+        <Form layout="vertical" className="space-y-2 md:space-y-4" form={form}>
           <Form.Item
             label="Raw Material Type"
             name="rawMaterialType"
+            className="w-full"
             rules={[
               {
                 required: true,
@@ -177,23 +178,25 @@ const RawMaterial = () => {
               },
             ]}
           >
-            <Input />
+            <Input className="w-full" />
           </Form.Item>
 
           <Form.Item
             label="Quantity"
             name="quantity"
+            className="w-full"
             rules={[{ required: true, message: "Please input the quantity!" }]}
           >
-            <InputNumber min={0} />
+            <InputNumber min={0} className="w-full" />
           </Form.Item>
 
           <Form.Item
             label="Unit"
             name="unit"
+            className="w-full"
             rules={[{ required: true, message: "Please input the unit!" }]}
           >
-            <Input />
+            <Input className="w-full" />
           </Form.Item>
         </Form>
       </Modal>

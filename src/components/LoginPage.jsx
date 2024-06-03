@@ -37,7 +37,7 @@ const LoginPage = () => {
       navigate(`/home/admin/${id}`);
       console.log(role);
     } else {
-      navigate(`/home/employee/${id}`);
+      navigate(`/home/employee/${id}/production`);
       console.log(role);
     }
   };

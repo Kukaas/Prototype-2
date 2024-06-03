@@ -77,9 +77,6 @@ const Employees = () => {
       key: "action",
       render: (text, record) => (
         <div>
-          <Button type="primary" className="mr-2">
-            Edit
-          </Button>
           <Popconfirm
             title="Are you sure delete this record?"
             onConfirm={() => handleDelete(record)}
