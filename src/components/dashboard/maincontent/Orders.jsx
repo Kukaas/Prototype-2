@@ -419,7 +419,7 @@ const Orders = () => {
                           <Select.Option value="S14">S14</Select.Option>
                           <Select.Option value="S15">S15</Select.Option>
                           <Select.Option value="S16">S16</Select.Option>
-                          <Select.Option value="S7">S7</Select.Option>
+                          <Select.Option value="S7">S17</Select.Option>
                           <Select.Option value="S18">S18</Select.Option>
                           <Select.Option value="S18+">S18+</Select.Option>
                           <Select.Option value="S19+">S19+</Select.Option>

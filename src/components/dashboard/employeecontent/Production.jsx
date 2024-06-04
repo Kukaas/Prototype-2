@@ -118,7 +118,11 @@ const Production = () => {
   const ProductionModal = ({ isVisible, handleOk, handleCancel }) => {
     return (
       <Modal
-      title={<Title level={3} style={{ textAlign: 'center' }}>Add Production</Title>}
+        title={
+          <Title level={3} style={{ textAlign: "center" }}>
+            Add Production
+          </Title>
+        }
         visible={isVisible}
         onOk={handleOk}
         onCancel={handleCancel}
@@ -148,12 +152,19 @@ const Production = () => {
               { required: true, message: "Please select the product type!" },
             ]}
           >
-            <Select placeholder="Select a product type" className="w-full font-normal">
+            <Select
+              placeholder="Select a product type"
+              className="w-full font-normal"
+            >
               <Select.Option value="BLOUSE">BLOUSE</Select.Option>
               <Select.Option value="SKIRT">SKIRT</Select.Option>
               <Select.Option value="POLO">POLO</Select.Option>
               <Select.Option value="PANTS">PANTS</Select.Option>
               <Select.Option value="LOGO">LOGO</Select.Option>
+              <Select.Option value="PE TSHIRT">PE TSHIRT</Select.Option>
+              <Select.Option value="PE JOGGING PANT">
+                PE JOGGING PANT
+              </Select.Option>
             </Select>
           </Form.Item>
           <Form.Item
@@ -178,7 +189,7 @@ const Production = () => {
               <Select.Option value="S14">S14</Select.Option>
               <Select.Option value="S15">S15</Select.Option>
               <Select.Option value="S16">S16</Select.Option>
-              <Select.Option value="S7">S7</Select.Option>
+              <Select.Option value="S7">S17</Select.Option>
               <Select.Option value="S18">S18</Select.Option>
               <Select.Option value="S18+">S18+</Select.Option>
               <Select.Option value="S19+">S19+</Select.Option>
@@ -195,7 +206,11 @@ const Production = () => {
             className="w-full font-bold"
             rules={[{ required: true, message: "Please input the email!" }]}
           >
-            <Input type="email" placeholder="Enter your email" className="w-full font-normal"/>
+            <Input
+              type="email"
+              placeholder="Enter your email"
+              className="w-full font-normal"
+            />
           </Form.Item>
         </Form>
       </Modal>
